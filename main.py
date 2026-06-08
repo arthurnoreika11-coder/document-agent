@@ -1,3 +1,2 @@
-from parser.reader import read_txt_file
+from parser.reader import * 
 
-print(read_txt_file("requirements.txt"))
