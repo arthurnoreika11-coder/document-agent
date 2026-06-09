@@ -1,7 +1,5 @@
 # Document Agent
 
-A document processing and management system that leverages AI to intelligently handle, organize, and extract insights from documents.
-
 ## Features
 
 - Document parsing and analysis
