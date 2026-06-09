@@ -10,8 +10,13 @@ def read_docx_file(fileName) -> str:
     doc = Document(fileName)
     fullText = []
     for para in doc.paragraphs:
-        fullText.append(para.text)
-    return '\n'.join(fullText)
+        if not para.text.strip():
+            continue
+        fullText.append({
+            "style": para.style.name,
+            "text": para.text
+        })
+    return fullText
 
 def read_pdf_file(fileName) -> str:
     text = extract_text(fileName)
