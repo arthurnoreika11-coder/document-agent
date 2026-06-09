@@ -28,5 +28,4 @@ npm start
 
 1. Clone the repository
 2. Install dependencies
-3. Configure your environment variables
-4. Run the application
+3. Run the application
