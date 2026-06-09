@@ -27,3 +27,12 @@ def docx_to_markdown(docx_content) -> str:
             mdContent += f"__{text}__\n"
 
     return mdContent.strip()
+
+def pdf_to_markdown(pdf_content) -> str:
+    mdContent = ""
+    for item in pdf_content:
+        style = item.get("style", "")
+        text = item.get("text", "")
+
+        //write regex to match pdf styles and convert to markdown
+    return mdContent.strip()
