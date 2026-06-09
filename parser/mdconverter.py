@@ -68,3 +68,6 @@ def pdf_to_markdown(pdf_content) -> str:
 
     mdContent = re.sub(r"\n{3,}", "\n\n", mdContent)
     return mdContent.strip()
+
+def txt_to_markdown(txt_content) -> str:
+    return pdf_to_markdown(txt_content)
