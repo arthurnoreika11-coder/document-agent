@@ -49,6 +49,9 @@ def format_pdf_line(line: str) -> str:
 
 
 def pdf_to_markdown(pdf_content) -> str:
+    if isinstance(pdf_content, str):
+        pdf_content = [{"text": pdf_content}]
+
     mdContent = ""
     for item in pdf_content:
         text = item.get("text", "")
