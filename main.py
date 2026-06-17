@@ -1,6 +1,9 @@
 from pathlib import Path
 from workers.reader import FileTypeError, read_docx, read_pdf
 from workers.mdconverter import docx_to_markdown, pdf_to_markdown
+from ai import stream_agents
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 def convert_to_markdown(input_path: str, output_path: str) -> None:
     ext = Path(input_path).suffix.lower()
@@ -25,3 +28,5 @@ def convert_to_markdown(input_path: str, output_path: str) -> None:
         print(f"File not found: {input_path}")
     except Exception as e:
         print(f"Error processing file: {e}")
+
+app = FastAPI()
