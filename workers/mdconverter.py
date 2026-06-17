@@ -69,7 +69,8 @@ def format_pdf_line(line: str) -> str:
     
     # Convert bullet points to markdown format
     if re.match(r"^[-•]\s+", stripped):
-        return f"- {re.sub(r'^[-•]\s+', '', stripped)}"
+        pattern = r'^[-•]\s+'
+        return f"- {re.sub(pattern, '', stripped)}"
     
     # Convert all-caps lines to headings
     if is_all_caps(stripped):

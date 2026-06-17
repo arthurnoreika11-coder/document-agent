@@ -1,9 +1,12 @@
 from pathlib import Path
+from fastapi.responses import HTMLResponse
 from workers.reader import FileTypeError, read_docx, read_pdf
 from workers.mdconverter import docx_to_markdown, pdf_to_markdown
-from ai import stream_agents
+from workers.ai import stream_agents
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
 
 def convert_to_markdown(input_path: str, output_path: str) -> None:
     ext = Path(input_path).suffix.lower()
@@ -30,3 +33,10 @@ def convert_to_markdown(input_path: str, output_path: str) -> None:
         print(f"Error processing file: {e}")
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
