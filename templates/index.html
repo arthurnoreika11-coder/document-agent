@@ -118,10 +118,55 @@
             }
         });
 
+        let selectedFile = null;
+
         function handleFileSelect(file) {
+            selectedFile = file;
             fileName.textContent = file.name;
             fileInfo.style.display = 'block';
         }
+
+        uploadBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                return;
+            }
+
+            resultsPanel.innerHTML = '<pre class="results-output"></pre>';
+            const output = resultsPanel.querySelector('.results-output');
+            output.textContent = 'Generating markdown...';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                const response = await fetch('/convert', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Request failed with status ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                output.textContent = '';
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        break;
+                    }
+
+                    output.textContent += decoder.decode(value, { stream: true });
+                    resultsPanel.scrollTop = resultsPanel.scrollHeight;
+                }
+
+                output.textContent += decoder.decode();
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+            }
+        });
     </script>
 </body>
 </html>

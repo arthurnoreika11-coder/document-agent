@@ -29,6 +29,6 @@ def stream_agents(markdown: str, model: str = "mistral"):
     for chunk in stream:
         yield chunk["response"]
 
-
-for chunk in stream_agents(markdown_text):
-    print(chunk, end="", flush=True)
+def ai_output(markdown_text: str):
+    for chunk in stream_agents(markdown_text):
+        print(chunk, end="", flush=True)
