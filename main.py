@@ -11,28 +11,36 @@ from fastapi.templating import Jinja2Templates
 
 
 def convert_to_markdown(input_path: str, output_path: str) -> Iterator[str]:
+    full_text: list[str] = []
     ext = Path(input_path).suffix.lower()
+    
     try:
         if ext == ".docx":
             content = read_docx(input_path)
             md_content = docx_to_markdown(content)
+            for chunk in stream_agents(md_content):
+            if chunk:
+                full_text.append(chunk)
+                yield chunk
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write("".join(full_text))
+
         elif ext == ".pdf":
             content = read_pdf(input_path)
             md_content = pdf_to_markdown(content)
+            for chunk in stream_agents(md_content):
+            if chunk:
+                full_text.append(chunk)
+                yield chunk
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write("".join(full_text))
+
         else:
             yield "Unsupported file type"
             return
 
-        full_text: list[str] = []
-        for chunk in stream_agents(md_content):
-            if chunk:
-                full_text.append(chunk)
-                yield chunk
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write("".join(full_text))
-
         print(f"Markdown file created at: {output_path}")
+        
     except FileTypeError:
         yield f"Unsupported file type: {ext}"
     except FileNotFoundError:
